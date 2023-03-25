@@ -5,11 +5,10 @@ from rich.progress import track
 import urlchecker as url
 import managementmodes as mm
 
-mm.show_functions()
-
 def management_mode_picker():
     mm.show_functions()
     input("Please input a number")
+    match 
 
 websitesToCheck = []
 if len(sys.argv) > 0:
