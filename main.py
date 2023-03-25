@@ -20,6 +20,7 @@ def management_mode_picker():
         case("4"):
             print("hello")
         case("Q"):
+            quit("Quiting program")
             
             
 
