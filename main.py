@@ -8,18 +8,38 @@ import managementmodes as mm
 
 def management_mode_picker():
     mm.show_functions()
-    inputnum = input("Please input a number, (q to quit)")
+    inputnum = input("Please choose a mode")
     match (inputnum):
         case (1):
             print("hello")
 
+#region openingurls
+#checks for dir called history,
+#if it doesn't exist makes the dir
+DIR = "history"
+if not os.path.exists(DIR):
+    os.mkdir(DIR)
 
-websitesToCheck = []
+#opens the list in read and append mode,
+#if the file doesn't exist it also
+#creates it in the dir
+listofurls = open(f"{DIR}/urls.json","a")
+checkurls = open(f"{DIR}/urls.json","r")
+urls = checkurls.readlines()
+
+#removes \n from urls
+for i,line in enumerate(urls):
+    urls[i] = line.replace(R'\n','')
+#endregion
+
 if len(sys.argv) > 0:
     for argument in sys.argv[1:]:
         if url.is_string_an_url(argument):
-            websitesToCheck.append(argument)
-            print(f"Added website '{argument}' to list.")
+            if argument not in urls:
+                listofurls.write(f"{argument}")
+                print(f"Added website '{argument}' to list.")
+            else:
+                print(f"{argument} is already part of the list.")
             continue
         match (argument):
             case ("--manage" | "--m"):
@@ -34,8 +54,8 @@ if len(sys.argv) > 0:
                     time.sleep(0.03)
                 print(":)")
             case ("--check" | "--c"):
-                # comment: do check
+                # do check
                 print("world")
             case (_):
-                # comment: skip + send "argument not recognized"
+                # skip + send "argument not recognized"
                 print("Argument not recognized, skipping...")
