@@ -9,14 +9,12 @@ from rich.progress import track
 import urlchecker as url
 import managementmodes as mm
 
-DIR = "history"
-
 def history_creator():
     """
-    Creates DIR
+    Creates dir
     """
-    if not os.path.exists(DIR):
-        os.mkDIR(DIR)
+    if not os.path.exists(dir):
+        os.mkdir(dir)
 
 
 def delete_new_lines(ls_url: list):
@@ -31,9 +29,10 @@ def delete_new_lines(ls_url: list):
 
 def is_website_url_already_given(url_to_check: str):
     """
-    This function checks if the given item is already in urls.txt
+    This function checks if the given item is already in urls.json
     """
-    check = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
+    dir = "history"
+    check = open(f"{dir}/urls.json", "r", encoding="UTF-8")
     url_list = delete_new_lines(check.readlines())
     if url_to_check not in url_list:
         return True
@@ -43,11 +42,12 @@ def is_website_url_already_given(url_to_check: str):
 # region add_mode
 def add_websites():
     """
-    This function allows you to add websites to urls.txt,\n
-    also checks if the given item is already in urls.txt
+    This function allows you to add websites to urls.json,\n
+    also checks if the given item is already in urls.json
     """
     while True:
-        urltxt = open(f"{DIR}/urls.txt", "a", encoding="UTF-8")
+        dir = "history"
+        urltxt = open(f"{dir}/urls.json", "a", encoding="UTF-8")
         websiteurl = input(
             "Give a valid url (https://www.site.com) or leave empty to exit: "
         )
@@ -70,9 +70,10 @@ def add_websites():
 # region view_mode
 def view_websites():
     """
-    This function allows you to view all the websites in urls.txt
+    This function allows you to view all the websites in urls.json
     """
-    check = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
+    dir = "history"
+    check = open(f"{dir}/urls.json", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
     print(*urls, sep="\n")
 
@@ -83,12 +84,13 @@ def view_websites():
 # region delete_mode
 def delete_websites():
     """
-    This function allows you to delete websites from urls.txt\n
-    it also writes the non delete items in urls.txt
+    This function allows you to delete websites from urls.json\n
+    it also writes the non delete items in urls.json
     """
-    check = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
+    dir = "history"
+    check = open(f"{dir}/urls.json", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
-    newtxt = open(f"{DIR}/urls.txt", "w", encoding="UTF-8")
+    newtxt = open(f"{dir}/urls.json", "w", encoding="UTF-8")
     urldictionary = {}
     print("The urls are:")
     for i, link in enumerate(urls):
@@ -113,9 +115,10 @@ def delete_websites():
 
 
 def schedule_check():
-    read_schedulejson = open(f"{DIR}/schedule.json", "r", encoding="UTF-8")
-
-    # writeschedulejson = open(f"{DIR}/schedule.json","w",encoding="UTF-8")
+    dir = "history"
+    read_schedulejson = open(f"{dir}/schedule.json", "r", encoding="UTF-8")
+    schedule_settings = read_schedulejson()
+    # writeschedulejson = open(f"{dir}/schedule.json","w",encoding="UTF-8")
 
 
 def management_mode_picker():
@@ -177,7 +180,8 @@ def main():
 
 
 if __name__ == "__main__":
+    dir = "history"
     history_creator()
-    urltext = open(f"{DIR}/urls.txt", "a", encoding="UTF-8")
-    checkurls = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
+    urltext = open(f"{dir}/urls.json", "a", encoding="UTF-8")
+    checkurls = open(f"{dir}/urls.json", "r", encoding="UTF-8")
     main()
