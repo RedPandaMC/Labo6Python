@@ -1,10 +1,12 @@
+"""
+This code is used to display a table with all\nthe modes in management mode
+"""
 from rich.console import Console
 from rich.table import Table
 def show_functions():
     """
     This function generates a table for all functions in the management mode.
     """
-
     #region table
     table = Table(title="[not italic]ᴍᴏᴅᴇs[/not italic]")
     table.add_column("N.", justify="right", style="#FF006E", no_wrap=True)

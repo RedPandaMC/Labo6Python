@@ -9,6 +9,14 @@ from rich.progress import track
 import urlchecker as url
 import managementmodes as mm
 
+def history_creator():
+    """
+    Creates dir
+    """
+    dir = "history"
+    if not os.path.exists(dir):
+        os.mkdir(dir)
+
 def delete_new_lines(ls_url: list):
     """
     This function gives the user a list without '\\n'
@@ -18,24 +26,30 @@ def delete_new_lines(ls_url: list):
         newlist.append(line.replace("\n", ""))
     return newlist
 
-def is_website_url_already_given(url_to_check:str):
+
+def is_website_url_already_given(url_to_check: str):
     """
     This function checks if the given item is already in urls.txt
     """
-    check = open(f"{DIR}/urls.txt", "r",encoding="UTF-8")
+    dir = "history"
+    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     url_list = delete_new_lines(check.readlines())
     if url_to_check not in url_list:
         return True
     return False
 
+#region addmode
 def add_websites():
     """
     This function allows you to add websites to urls.txt,\n
     also checks if the given item is already in urls.txt
     """
+    dir = "history"
     while True:
-        urltxt = open(f"{DIR}/urls.txt", "a",encoding="UTF-8")
-        websiteurl = input("Give a valid url (https://www.site.com) or leave empty to exit: ")
+        urltxt = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
+        websiteurl = input(
+            "Give a valid url (https://www.site.com) or leave empty to exit: "
+        )
         if websiteurl == "":
             break
         if url.is_string_an_url(websiteurl):
@@ -47,14 +61,47 @@ def add_websites():
         else:
             print("That isn't a valid URL")
         continue
+#endregion addmode
 
+#region viewmode
 def view_websites():
     """
     This function allows you to view all the websites in urls.txt
     """
-    urls = delete_new_lines(checkurls.readlines())
-    print(*urls,sep='\n')
-    input("Press enter to continue.")
+    dir = "history"
+    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    urls = delete_new_lines(check.readlines())
+    print(*urls, sep="\n")
+#endregion viewmode
+
+#region deletemode
+def delete_websites():
+    """
+    This function allows you to delete websites from urls.txt\n
+    it also writes the non delete items in urls.txt
+    """
+    dir = "history"
+    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    urls = delete_new_lines(check.readlines())
+    newtxt = open(f"{dir}/urls.txt", "w", encoding="UTF-8")
+    urldictionary = {}
+    print("The urls are:")
+    for i, link in enumerate(urls):
+        urldictionary[f"{i+1}"] = link
+        print(f"{i+1}. '{link}'")
+    while True:
+        url_to_delete = input(
+            "Give me a number for the urls that you want to delete or leave empty to exit: ")
+        if url_to_delete == "":
+            break
+        if url_to_delete not in urldictionary.keys():
+            print("This item does not exist \nor is already deleted.")
+            continue
+        else:
+            urldictionary.pop(url_to_delete)
+    for key in urldictionary:
+        newtxt.write(f"{urldictionary[key]}\n")
+#endregion deletemode
 
 
 
@@ -71,14 +118,16 @@ def management_mode_picker():
                 add_websites()
             case ("2"):
                 view_websites()
+                input("Press enter to continue.")
             case ("3"):
-                print("hello")
+                delete_websites()
             case ("4"):
                 print("hello")
             case ("Q"):
                 quit()
             case (_):
                 print("Not recognized, try again")
+
 
 def main():
     """
@@ -98,8 +147,12 @@ def main():
                 case ("--manage" | "--m"):
                     os.system("cls")
                     print("You have chosen management mode.")
-                    for _ in track(range(100),description="[#3a86ff]Loading...",style="#E5E5E5",
-                                   finished_style="#FF006E",):
+                    for _ in track(
+                        range(100),
+                        description="[#3a86ff]Loading...",
+                        style="#E5E5E5",
+                        finished_style="#FF006E",
+                    ):
                         time.sleep(0.03)
                     management_mode_picker()
                 case ("--check" | "--c"):
@@ -111,15 +164,8 @@ def main():
 
 
 if __name__ == "__main__":
-    # region openingurls
-    # checks for dir called history,
-    # if it doesn't exist makes the dir
-    DIR = "history"
-    if not os.path.exists(DIR):
-        os.mkdir(DIR)
-    # open documents to be used later
-    urltext = open(f"{DIR}/urls.txt", "a",encoding="UTF-8")
-    checkurls = open(f"{DIR}/urls.txt", "r",encoding="UTF-8")
-    # endregion
-
+    history_creator()
+    dir = "history"
+    urltext = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
+    checkurls = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     main()
