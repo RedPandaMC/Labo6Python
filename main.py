@@ -9,13 +9,15 @@ from rich.progress import track
 import urlchecker as url
 import managementmodes as mm
 
+DIR = "history"
+
 def history_creator():
     """
-    Creates dir
+    Creates DIR
     """
-    dir = "history"
-    if not os.path.exists(dir):
-        os.mkdir(dir)
+    if not os.path.exists(DIR):
+        os.mkDIR(DIR)
+
 
 def delete_new_lines(ls_url: list):
     """
@@ -31,22 +33,21 @@ def is_website_url_already_given(url_to_check: str):
     """
     This function checks if the given item is already in urls.txt
     """
-    dir = "history"
-    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    check = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
     url_list = delete_new_lines(check.readlines())
     if url_to_check not in url_list:
         return True
     return False
 
-#region addmode
+
+# region add_mode
 def add_websites():
     """
     This function allows you to add websites to urls.txt,\n
     also checks if the given item is already in urls.txt
     """
-    dir = "history"
     while True:
-        urltxt = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
+        urltxt = open(f"{DIR}/urls.txt", "a", encoding="UTF-8")
         websiteurl = input(
             "Give a valid url (https://www.site.com) or leave empty to exit: "
         )
@@ -61,29 +62,33 @@ def add_websites():
         else:
             print("That isn't a valid URL")
         continue
-#endregion addmode
 
-#region viewmode
+
+# endregion add_mode
+
+
+# region view_mode
 def view_websites():
     """
     This function allows you to view all the websites in urls.txt
     """
-    dir = "history"
-    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    check = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
     print(*urls, sep="\n")
-#endregion viewmode
 
-#region deletemode
+
+# endregion view_mode
+
+
+# region delete_mode
 def delete_websites():
     """
     This function allows you to delete websites from urls.txt\n
     it also writes the non delete items in urls.txt
     """
-    dir = "history"
-    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    check = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
-    newtxt = open(f"{dir}/urls.txt", "w", encoding="UTF-8")
+    newtxt = open(f"{DIR}/urls.txt", "w", encoding="UTF-8")
     urldictionary = {}
     print("The urls are:")
     for i, link in enumerate(urls):
@@ -91,7 +96,8 @@ def delete_websites():
         print(f"{i+1}. '{link}'")
     while True:
         url_to_delete = input(
-            "Give me a number for the urls that you want to delete or leave empty to exit: ")
+            "Give me a number for the urls that you want to delete or leave empty to exit: "
+        )
         if url_to_delete == "":
             break
         if url_to_delete not in urldictionary.keys():
@@ -101,8 +107,15 @@ def delete_websites():
             urldictionary.pop(url_to_delete)
     for key in urldictionary:
         newtxt.write(f"{urldictionary[key]}\n")
-#endregion deletemode
 
+
+# endregion delete_mode
+
+
+def schedule_check():
+    read_schedulejson = open(f"{DIR}/schedule.json", "r", encoding="UTF-8")
+
+    # writeschedulejson = open(f"{DIR}/schedule.json","w",encoding="UTF-8")
 
 
 def management_mode_picker():
@@ -165,7 +178,6 @@ def main():
 
 if __name__ == "__main__":
     history_creator()
-    dir = "history"
-    urltext = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
-    checkurls = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    urltext = open(f"{DIR}/urls.txt", "a", encoding="UTF-8")
+    checkurls = open(f"{DIR}/urls.txt", "r", encoding="UTF-8")
     main()
