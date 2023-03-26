@@ -90,10 +90,10 @@ if __name__ == "__main__":
     # if it doesn't exist makes the dir
     DIR = "history"
     if not os.path.exists(DIR):
-    os.mkdir(DIR)
+        os.mkdir(DIR)
     # open documents to be used later
     urltext = open(f"{DIR}/urls.txt", "a",encoding="UTF-8")
     checkurls = open(f"{DIR}/urls.txt", "r",encoding="UTF-8")
     # endregion
-    
+
     main()
