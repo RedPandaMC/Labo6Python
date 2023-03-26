@@ -5,17 +5,6 @@ from rich.progress import track
 import urlchecker as url
 import managementmodes as mm
 
-# region openingurls
-# checks for dir called history,
-# if it doesn't exist makes the dir
-DIR = "history"
-if not os.path.exists(DIR):
-    os.mkdir(DIR)
-# open documents to be used later
-urltext = open(f"{DIR}/urls.txt", "a",encoding="UTF-8")
-checkurls = open(f"{DIR}/urls.txt", "r",encoding="UTF-8")
-# endregion
-
 def delete_new_lines(ls_url: list) -> list:
     newlist = []
     for line in ls_url:
@@ -68,10 +57,6 @@ def management_mode_picker():
             case (_):
                 print("Not recognized, try again")
 
-
-
-
-
 def main():
     if len(sys.argv) > 0:
         for argument in sys.argv[1:]:
@@ -100,5 +85,15 @@ def main():
 
 
 if __name__ == "__main__":
-
+    # region openingurls
+    # checks for dir called history,
+    # if it doesn't exist makes the dir
+    DIR = "history"
+    if not os.path.exists(DIR):
+    os.mkdir(DIR)
+    # open documents to be used later
+    urltext = open(f"{DIR}/urls.txt", "a",encoding="UTF-8")
+    checkurls = open(f"{DIR}/urls.txt", "r",encoding="UTF-8")
+    # endregion
+    
     main()
