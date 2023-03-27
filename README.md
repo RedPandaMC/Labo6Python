@@ -19,15 +19,16 @@ With this tool, you can easily check whether your servers are online and keep tr
 ```{bash}
 python main.py https://www.example.com
 ```
->Om direct een website toe te voegen aan de lijst
+Om direct een website toe te voegen aan de lijst
 
 ```{bash}
 python main.py --manage 
 python main.py --m
 ```
->Om in management modus te geraken
+Om in management modus te geraken
 
 ```{bash}
 python main.py --check
+python main.py --c
 ```
->Om forced check uit te voeren
+Om forced check uit te voeren
