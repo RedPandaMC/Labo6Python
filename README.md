@@ -6,7 +6,7 @@ With this tool, you can easily check whether your servers are online and keep tr
 
 ## Features
 
-- Perform ping checks for servers based on their IP address or hostname
+- Perform ping checks for servers based on their hostname
 - Add, delete, or list servers through an interactive terminal interface
 - Operate the system via command-line interface using `sys.argv`
 - Keep track of data and checks performed in a JSON file
