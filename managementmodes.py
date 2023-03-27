@@ -3,6 +3,8 @@ import os
 import displaytable as dt
 import urlchecker as url
 
+from urllib.parse import urlparse
+
 
 def delete_new_lines(ls_url: list):
     """
@@ -137,3 +139,32 @@ def schedule_check():
     writeschedulejson.close()
     dt.show_schedule_settings()
     input("Press enter to continue")
+
+def extract_netloc(url:str):
+    """This function returns the base of a url 'www.example.com'."""
+    parsed_url = urlparse(url)
+    netloc = parsed_url.netloc
+    netloc = netloc.replace(' ','')
+    netloc = netloc.replace('\n', '')
+    return netloc
+
+def ping(host:str):
+    """This function pings via the os."""
+    response = os.system(f"ping -n 5 {host} > NUL")
+    os.system("cls")
+    if response == 0:
+        return True
+    else:
+        return False
+
+def perform_ping_check():
+    """
+    This function performs a ping check on a list of urls
+    """
+    dir = "history"
+    status = open(f"{dir}/status.json", "w",encoding="UTF-8")
+    websitestatus = {}
+    urls = open(f"{dir}/urls.txt", "r", encoding="UTF-8").readlines()
+    for url in urls:
+        websitestatus[url.replace('\n', '')] = ping(extract_netloc(url))
+    json.dump(websitestatus,status,indent=2)

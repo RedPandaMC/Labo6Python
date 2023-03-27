@@ -5,11 +5,12 @@ to check if they are online or not
 import time
 import sys
 import os
+
 from rich.progress import track
+
 import urlchecker as url
 import displaytable as dt
 import managementmodes as mm
-
 
 def history_creator():
     """
@@ -17,7 +18,6 @@ def history_creator():
     """
     if not os.path.exists(dir):
         os.mkdir(dir)
-
 
 def management_mode_picker():
     """
@@ -66,17 +66,17 @@ def main():
                         range(100),
                         description="[#3a86ff]Loading...",
                         style="#E5E5E5",
-                        finished_style="#FF006E",
+                        finished_style="#FF006E"
                     ):
                         time.sleep(0.03)
                     management_mode_picker()
                 case ("--check" | "--c"):
-                    # do check
-                    print("world")
+                    mm.perform_ping_check()
+                    for _ in track(range(10),description="[#0EAD69]Pinging...",style="#E5E5E5",finished_style="#FF006E"):
+                        time.sleep(0.01)
+                    input("Results written in status.json")
                 case (_):
-                    # skip + send "argument not recognized"
                     print("Argument not recognized, skipping...")
-
 
 if __name__ == "__main__":
     dir = "history"
