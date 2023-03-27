@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Status</title>
+    <style>
+      body {
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+        background-color: #DAD2D8;
+      }
+      
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+      }
+      
+      table {
+        border-collapse: collapse;
+        margin: 50px auto;
+      }
+      
+      th {
+        background-color: #EC9A29;
+        color: #fff;
+        padding: 10px;
+        text-align: left;
+      }
+      
+      td {
+        border: solid #161215 1px ;
+        padding: 5px;
+        
+      }
+      
+      .available {
+        background-color: #3E9639;
+        color:white;
+      }
+      
+      .not-available {
+        background-color: #AF3732;
+        color:white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>URL Status</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="status-table-body"></tbody>
+    </table>
+
+    <script>
+      fetch('./history/status.json')
+        .then(response => response.json())
+        .then(data => {
+          const statusTableBody = document.querySelector('#status-table-body');
+          for (const [url, status] of Object.entries(data)) {
+            const row = document.createElement('tr');
+            const urlCell = document.createElement('td');
+            const statusCell = document.createElement('td');
+
+            urlCell.textContent = url;
+            statusCell.textContent = status ? 'Available' : 'Not available';
+            statusCell.classList.add(status ? 'available' : 'not-available');
+
+            row.appendChild(urlCell);
+            row.appendChild(statusCell);
+            statusTableBody.appendChild(row);
+          }
+        })
+        .catch(error => console.error(error));
+    </script>
+  </body>
+</html>

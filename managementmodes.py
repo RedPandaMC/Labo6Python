@@ -150,7 +150,7 @@ def extract_netloc(url:str):
 
 def ping(host:str):
     """This function pings via the os."""
-    response = os.system(f"ping -n 5 {host} > NUL")
+    response = os.system(f"ping -n 1 {host} > NUL")
     os.system("cls")
     if response == 0:
         return True

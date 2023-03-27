@@ -11,6 +11,7 @@ from rich.progress import track
 import urlchecker as url
 import displaytable as dt
 import managementmodes as mm
+import subprocess
 
 def history_creator():
     """
@@ -72,9 +73,11 @@ def main():
                     management_mode_picker()
                 case ("--check" | "--c"):
                     mm.perform_ping_check()
-                    for _ in track(range(10),description="[#0EAD69]Pinging...",style="#E5E5E5",finished_style="#FF006E"):
+                    for _ in track(range(10),description="[#0EAD69]Pinging...",style="#E5E5E5",
+                                   finished_style="#FF006E"):
                         time.sleep(0.01)
                     input("Results written in status.json")
+                    os.system("cls")
                 case (_):
                     print("Argument not recognized, skipping...")
 
@@ -83,4 +86,6 @@ if __name__ == "__main__":
     history_creator()
     urltext = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
     checkurls = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
+    command = ['python', r'scheduledpings.py']
+    process = subprocess.Popen(command)
     main()
