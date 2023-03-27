@@ -5,7 +5,6 @@ to check if they are online or not
 import time
 import sys
 import os
-import json
 from rich.progress import track
 import urlchecker as url
 import displaytable as dt
@@ -19,39 +18,6 @@ def history_creator():
     if not os.path.exists(dir):
         os.mkdir(dir)
 
-#region wip
-def does_file_exist(filename:str):
-    """
-    This function checks if a file exists in the dir = "history" folder.
-    """
-    dir = "history"
-    if os.path.exists(f"{dir}/{filename}"):
-        return True
-    return False
-
-def create_schedule_settings_if_not_exists():
-    """
-    This function checks if the schedule settings already exist.
-    """
-    dir = "history"
-    if not does_file_exist("schedule.json"):
-        basesettings = {"do-scheduled-ping":False,"schedule-time-in-minutes":0}
-        write_schedulejson = open(f"{dir}/schedule.json","w",encoding="UTF-8")
-        json.dump(basesettings,write_schedulejson,indent=2)
-
-def schedule_check():
-    """
-    This function lets you choose if you want to schedule a ping task,
-    it also lets you decide the amount of time between tasks.
-    """
-    dir = "history"
-    create_schedule_settings_if_not_exists()
-    dt.show_schedule_settings()
-    input()
-    read_schedulejson = open(f"{dir}/schedule.json", "r", encoding="UTF-8")
-    #schedule_settings = read_schedulejson()
-    # writeschedulejson = open(f"{dir}/schedule.json","w",encoding="UTF-8")
-#endregion wip
 
 def management_mode_picker():
     """
@@ -70,11 +36,13 @@ def management_mode_picker():
             case ("3"):
                 mm.delete_websites()
             case ("4"):
-                schedule_check()
+                mm.schedule_check()
             case ("Q"):
                 quit()
             case (_):
                 print("Not recognized, try again")
+                time.sleep(1)
+
 
 def main():
     """

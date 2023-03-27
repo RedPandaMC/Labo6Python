@@ -1,4 +1,8 @@
+import json
+import os
+import displaytable as dt
 import urlchecker as url
+
 
 def delete_new_lines(ls_url: list):
     """
@@ -8,6 +12,7 @@ def delete_new_lines(ls_url: list):
     for line in ls_url:
         newlist.append(line.replace("\n", ""))
     return newlist
+
 
 def is_website_url_already_given(url_to_check: str):
     """
@@ -19,6 +24,7 @@ def is_website_url_already_given(url_to_check: str):
     if url_to_check not in url_list:
         return True
     return False
+
 
 def add_websites():
     """
@@ -43,6 +49,7 @@ def add_websites():
             print("That isn't a valid URL")
         continue
 
+
 def view_websites():
     """
     This function allows you to view all the websites in urls.txt
@@ -51,6 +58,7 @@ def view_websites():
     check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
     print(*urls, sep="\n")
+
 
 def delete_websites():
     """
@@ -80,3 +88,52 @@ def delete_websites():
     for key in urldictionary:
         newtxt.write(f"{urldictionary[key]}\n")
 
+
+def does_file_exist(filename: str):
+    """
+    This function checks if a file exists in the dir = "history" folder.
+    """
+    dir = "history"
+    if os.path.exists(f"{dir}/{filename}"):
+        return True
+    return False
+
+
+def create_schedule_settings_if_not_exists():
+    """
+    This function checks if the schedule settings already exist.
+    """
+    dir = "history"
+    if not does_file_exist("schedule.json"):
+        basesettings = {"do-scheduled-ping": False, "schedule-time-in-minutes": 0}
+        write_schedulejson = open(f"{dir}/schedule.json", "w", encoding="UTF-8")
+        json.dump(basesettings, write_schedulejson, indent=2)
+
+
+def schedule_check():
+    """
+    This function lets you choose if you want to schedule a ping task,
+    it also lets you decide the amount of time between tasks.
+    """
+    create_schedule_settings_if_not_exists()
+    dir = "history"
+    readschedulejson = open(f"{dir}/schedule.json", "r", encoding="UTF-8")
+    settings = json.load(readschedulejson)
+    dt.show_schedule_settings()
+    writeschedulejson = open(f"{dir}/schedule.json", "w", encoding="UTF-8")
+    change_settings = input("Do you want to change the settings? (Y/N)").upper()
+    if change_settings == "Y":
+        scheduled_pings = input("Do you want to turn scheduled pings on? (Y/N)").upper()
+        if scheduled_pings == "Y":
+            settings["do-scheduled-ping"] = True
+        elif scheduled_pings == "N":
+            settings["do-scheduled-ping"] = False
+
+        if settings["do-scheduled-ping"] is True:
+            if input("Do you want to change the interval? (Y/N)").upper() == "Y":
+                settings["schedule-time-in-minutes"] = float(input("Time (in min): "))
+    readschedulejson.close()
+    json.dump(settings, writeschedulejson, indent=2)
+    writeschedulejson.close()
+    dt.show_schedule_settings()
+    input("Press enter to continue")
