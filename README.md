@@ -32,3 +32,11 @@ python main.py --check
 python main.py --c
 ```
 Om forced check uit te voeren
+
+```{bash}
+python main.py
+```
+Elke keer als je main.py gebruikt wordt 
+er ook een background process gestart waarin 
+een ping check wordt uitgevoerd na een aantal
+ingegeven minuten
