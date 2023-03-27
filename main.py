@@ -5,10 +5,12 @@ to check if they are online or not
 import time
 import sys
 import os
+import json
 from rich.progress import track
 import urlchecker as url
 import displaytable as dt
 import managementmodes as mm
+
 
 def history_creator():
     """
@@ -17,13 +19,39 @@ def history_creator():
     if not os.path.exists(dir):
         os.mkdir(dir)
 
-#wip
-def schedule_check():
+#region wip
+def does_file_exist(filename:str):
+    """
+    This function checks if a file exists in the dir = "history" folder.
+    """
     dir = "history"
+    if os.path.exists(f"{dir}/{filename}"):
+        return True
+    return False
+
+def create_schedule_settings_if_not_exists():
+    """
+    This function checks if the schedule settings already exist.
+    """
+    dir = "history"
+    if not does_file_exist("schedule.json"):
+        basesettings = {"do-scheduled-ping":False,"schedule-time-in-minutes":0}
+        write_schedulejson = open(f"{dir}/schedule.json","w",encoding="UTF-8")
+        json.dump(basesettings,write_schedulejson,indent=2)
+
+def schedule_check():
+    """
+    This function lets you choose if you want to schedule a ping task,
+    it also lets you decide the amount of time between tasks.
+    """
+    dir = "history"
+    create_schedule_settings_if_not_exists()
+    dt.show_schedule_settings()
+    input()
     read_schedulejson = open(f"{dir}/schedule.json", "r", encoding="UTF-8")
-    schedule_settings = read_schedulejson()
+    #schedule_settings = read_schedulejson()
     # writeschedulejson = open(f"{dir}/schedule.json","w",encoding="UTF-8")
-#wip
+#endregion wip
 
 def management_mode_picker():
     """
@@ -31,7 +59,7 @@ def management_mode_picker():
     """
     while True:
         os.system("cls")
-        dt.show_functions()
+        dt.show_functions_management()
         inputnum = input("Please choose a mode: ")
         match (inputnum):
             case ("1"):
@@ -42,7 +70,7 @@ def management_mode_picker():
             case ("3"):
                 mm.delete_websites()
             case ("4"):
-                print("hello")
+                schedule_check()
             case ("Q"):
                 quit()
             case (_):
@@ -85,6 +113,6 @@ def main():
 if __name__ == "__main__":
     dir = "history"
     history_creator()
-    urltext = open(f"{dir}/urls.json", "a", encoding="UTF-8")
-    checkurls = open(f"{dir}/urls.json", "r", encoding="UTF-8")
+    urltext = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
+    checkurls = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     main()

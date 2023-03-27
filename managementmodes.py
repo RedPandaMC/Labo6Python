@@ -11,10 +11,10 @@ def delete_new_lines(ls_url: list):
 
 def is_website_url_already_given(url_to_check: str):
     """
-    This function checks if the given item is already in urls.json
+    This function checks if the given item is already in urls.txt
     """
     dir = "history"
-    check = open(f"{dir}/urls.json", "r", encoding="UTF-8")
+    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     url_list = delete_new_lines(check.readlines())
     if url_to_check not in url_list:
         return True
@@ -22,12 +22,12 @@ def is_website_url_already_given(url_to_check: str):
 
 def add_websites():
     """
-    This function allows you to add websites to urls.json,\n
-    also checks if the given item is already in urls.json
+    This function allows you to add websites to urls.txt,\n
+    also checks if the given item is already in urls.txt
     """
     while True:
         dir = "history"
-        urltxt = open(f"{dir}/urls.json", "a", encoding="UTF-8")
+        urltxt = open(f"{dir}/urls.txt", "a", encoding="UTF-8")
         websiteurl = input(
             "Give a valid url (https://www.site.com) or leave empty to exit: "
         )
@@ -45,22 +45,22 @@ def add_websites():
 
 def view_websites():
     """
-    This function allows you to view all the websites in urls.json
+    This function allows you to view all the websites in urls.txt
     """
     dir = "history"
-    check = open(f"{dir}/urls.json", "r", encoding="UTF-8")
+    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
     print(*urls, sep="\n")
 
 def delete_websites():
     """
-    This function allows you to delete websites from urls.json\n
-    it also writes the non delete items in urls.json
+    This function allows you to delete websites from urls.txt\n
+    it also writes the non delete items in urls.txt
     """
     dir = "history"
-    check = open(f"{dir}/urls.json", "r", encoding="UTF-8")
+    check = open(f"{dir}/urls.txt", "r", encoding="UTF-8")
     urls = delete_new_lines(check.readlines())
-    newtxt = open(f"{dir}/urls.json", "w", encoding="UTF-8")
+    newtxt = open(f"{dir}/urls.txt", "w", encoding="UTF-8")
     urldictionary = {}
     print("The urls are:")
     for i, link in enumerate(urls):
