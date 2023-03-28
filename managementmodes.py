@@ -140,15 +140,17 @@ def schedule_check():
     dt.show_schedule_settings()
     input("Press enter to continue")
 
-def extract_netloc(url:str):
+
+def extract_netloc(url: str):
     """This function returns the base of a url 'www.example.com'."""
     parsed_url = urlparse(url)
     netloc = parsed_url.netloc
-    netloc = netloc.replace(' ','')
-    netloc = netloc.replace('\n', '')
+    netloc = netloc.replace(" ", "")
+    netloc = netloc.replace("\n", "")
     return netloc
 
-def ping(host:str):
+
+def ping(host: str):
     """This function pings via the os."""
     response = os.system(f"ping -n 1 {host} > NUL")
     os.system("cls")
@@ -157,14 +159,15 @@ def ping(host:str):
     else:
         return False
 
+
 def perform_ping_check():
     """
     This function performs a ping check on a list of urls
     """
     dir = "history"
-    status = open(f"{dir}/status.json", "w",encoding="UTF-8")
+    status = open(f"{dir}/status.json", "w", encoding="UTF-8")
     websitestatus = {}
     urls = open(f"{dir}/urls.txt", "r", encoding="UTF-8").readlines()
     for url in urls:
-        websitestatus[url.replace('\n', '')] = ping(extract_netloc(url))
-    json.dump(websitestatus,status,indent=2)
+        websitestatus[url.replace("\n", "")] = ping(extract_netloc(url))
+    json.dump(websitestatus, status, indent=2)
